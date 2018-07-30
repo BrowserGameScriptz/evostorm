@@ -1,0 +1,43 @@
+<h3>Your buildings</h3>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <td>Position</td>
+        <td>Type</td>
+        <td>Level</td>
+        <td>Status</td>
+        <td>Production</td>
+        <td>Consumption</td>
+        <td title="Minimum amount of workers to operate">Min. workers</td>
+        <td title="Maximum amount of workers that can work in this facility">Max. workers</td>
+        <td title="Amount of workers operating this facility">Workers</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="b in buildings">
+        <td><a href="#/tiles/{{b.tile_id}}">{{b.tile_id}} (x: {{b.tile_coord_x}}, y: {{b.tile_coord_y}})</a></td>
+        <td>{{b.type}}</td>
+        <td>{{b.level}}</td>
+        <td>{{b.status}}</td>
+        <td>
+            Gold: {{b.gold_production}}<br/>
+            Uranium: {{b.uranium_production}}<br/>
+            Kegrum: {{b.kegrum_production}}<br/>
+            Energy: {{b.energy_production}}<br/>
+        </td>
+        <td>
+            Gold: {{b.gold_consumption}}<br/>
+            Uranium: {{b.uranium_consumption}}<br/>
+            Kegrum: {{b.kegrum_consumption}}<br/>
+            Energy: {{b.energy_consumption}}<br/>
+        </td>
+        <td>{{b.min_workers_amount}}</td>
+        <td>{{b.max_workers_amount}}</td>
+        <td>
+            <span ng-repeat="w in b.workers">
+                {{w.species_name}}: {{w.amount}}
+            </span>
+        </td>
+    </tr>
+    </tbody>
+</table>

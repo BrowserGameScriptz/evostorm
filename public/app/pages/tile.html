@@ -1,0 +1,123 @@
+<div class="row">
+    <div class="col-md-12">
+        <label>Coordinates: x:{{tile.x_coordinate}} y:{{tile.y_coordinate}}</label>
+    </div>
+    <div class="col-md-12">
+        <label>Terrain type: {{tile.tile_name}}</label>
+    </div>
+    <div class="col-md-12" ng-if="tile.is_resources_estimated == false">
+        <label>Resources: unknown</label>
+        <input ng-if="tile.is_estimate_resource_mission_in_progress == false" type="button"
+               class="btn btn-default btn-xs" value="Estimate resources mission"
+               ng-click="estimateMission(tile.tile_id)">
+        <span ng-if="tile.is_estimate_resource_mission_in_progress == true">Resources estimation will finish at {{tile.estimate_mission.finish_time}}</span>
+    </div>
+    <div class="col-md-12" ng-if="tile.is_resources_estimated == true">
+        <h4>Estimated natural resources</h4>
+        <table class="table table-bordered" style="width:400px">
+            <tr>
+                <td>Gold</td>
+                <td>{{tile.gold_left}}</td>
+            </tr>
+            <tr>
+                <td>Uranium</td>
+                <td>{{tile.uranium_left}}</td>
+            </tr>
+            <tr>
+                <td>Kegrum</td>
+                <td>{{tile.kegrum_left}}</td>
+            </tr>
+            <tr>
+                <td>Native population estimated size <i>({{tile.species_name}})</i></td>
+                <td>{{tile.species_amount}} individuals <input ng-if="tile.is_capture_mission_possible" type="button"
+                                                               class="btn btn-default btn-xs" value="Capture mission"
+                                                               ng-click="captureMission(tile.tile_id)"><span ng-if="tile.is_capture_mission_in_progress">(Capture mission will finish at {{tile.capture_mission.finish_time}})</span></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="row" ng-if="tile.is_occupied == false">
+    <div class="col-md-3 panel panel-default" ng-repeat="building in tile.available_buildings">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>{{building.name}}</h4>
+                </div>
+                <div class="col-md-12">
+                    Gold cost: {{building.gold_cost}}
+                </div>
+                <div class="col-md-12">
+                    Uranium cost: {{building.uranium_cost}}
+                </div>
+                <div class="col-md-12">
+                    Kegrum cost: {{building.kegrum_cost}}
+                </div>
+                <div class="col-md-12">
+                    Energy consumption: {{building.base_energy_consumption}}
+                </div>
+                <div class="col-md-12">
+                    Building time: {{building.build_time}} minutes
+                </div>
+                <div class="col-md-12">
+                    <input type="button" class="btn btn-sm btn-default" ng-click="build(building.id, tile.tile_id)"
+                           value="Build">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-if="tile.is_occupied == true">
+    <div class="col-md-12">
+        <h4>Built building:</h4>
+    </div>
+    <div class="col-md-12 panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>{{tile.building.building_name}}</h4>
+                </div>
+                <div class="col-md-12">
+                    Status: {{tile.building.status_name}}
+                </div>
+                <div class="col-md-12">
+                    Level: {{tile.building.level}}
+                </div>
+                <div class="col-md-12">
+                    Base gold production: {{tile.building.base_gold_production}} / Actual gold production:
+                    {{tile.building.actual_gold_production}}
+                </div>
+                <div class="col-md-12">
+                    Base uranium production: {{tile.building.base_uranium_production}} / Actual uranium production:
+                    {{tile.building.actual_uranium_production}}
+                </div>
+                <div class="col-md-12">
+                    Base kegrum production: {{tile.building.base_kegrum_production}} / Actual gold production:
+                    {{tile.building.actual_kegrum_production}}
+                </div>
+                <div class="col-md-12">
+                    Base gold upkeep: {{tile.building.base_gold_upkeep}}
+                </div>
+                <div class="col-md-12">
+                    Base uranium upkeep: {{tile.building.base_uranium_upkeep}}
+                </div>
+                <div class="col-md-12">
+                    Base kegrum upkeep: {{tile.building.base_kegrum_upkeep}}
+                </div>
+                <div class="col-md-12">
+                    Base energy consumption: {{tile.building.base_energy_consumption}}
+                </div>
+                <div class="col-md-12">
+                    Base energy production: {{tile.building.base_energy_production}}
+                </div>
+                <div class="col-md-12">
+                    Minimal workers amount: {{tile.building.min_workers_amount}}
+                </div>
+                <div class="col-md-12">
+                    Maximal workers amount: {{tile.building.max_workers_amount}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

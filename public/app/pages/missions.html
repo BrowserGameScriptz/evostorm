@@ -1,0 +1,59 @@
+<h3>Missions in progress</h3>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <td>Mission ID</td>
+        <td>Type</td>
+        <td>State</td>
+        <td>Started at</td>
+        <td>Will finish at</td>
+        <td>Result</td>
+        <td>Tile</td>
+        <td>Actions</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="m in missions_in_progress">
+        <td>{{m.id}}</td>
+        <td>{{m.type}}</td>
+        <td>{{m.status}}</td>
+        <td>{{m.started_date.date}} {{m.started_date.timezone}}</td>
+        <td>{{m.will_finish_at_date}}</td>
+        <td>{{m.result}}</td>
+        <td><a href="#/tiles/{{m.tile_id}}">{{m.tile_id}} (x: {{m.tile_coord_x}}, y: {{m.tile_coord_y}})</a></td>
+        <td>
+            <button class="btn btn-xs btn-default" ng-click="abortMission(m.id)">Abort</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Missions ended</h3>
+<table class="table table-bordered">
+    <thead>
+    <td>Mission ID</td>
+    <td>Type</td>
+    <td>State</td>
+    <td>Started at</td>
+    <td>Finished at</td>
+    <td>Result</td>
+    <td>Tile</td>
+    <td>Actions</td>
+    </thead>
+    <tbody>
+    <tr ng-repeat="m in missions_ended">
+        <td>{{m.id}}</td>
+        <td>{{m.type}}</td>
+        <td>{{m.status}}</td>
+        <td>{{m.started_date.date}} {{m.started_date.timezone}}</td>
+        <td>{{m.finished_date}}</td>
+        <td>{{m.result}}</td>
+        <td><a href="#/tiles/{{m.tile_id}}">{{m.tile_id}} (x: {{m.tile_coord_x}}, y: {{m.tile_coord_y}})</a></td>
+        <td>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+Mission list
+{{missions}}
