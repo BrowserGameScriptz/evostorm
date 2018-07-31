@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\MissionType;
-use App\Enums\MissionTypeEnum;
-use App\Models\MissionCost;
-use App\Models\MissionStatus;
+use App\Evostorm\Models\MissionType;
+use App\Evostorm\Enums\MissionTypeEnum;
+use App\Evostorm\Models\MissionCost;
+use App\Evostorm\Models\MissionStatus;
 
 class MissionsTableSeeder extends Seeder
 {

@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Enums;
+use App\Evostorm\Enums;
 
 class BuildingsTypesAllowedTileTypesTableSeeder extends Seeder {
 

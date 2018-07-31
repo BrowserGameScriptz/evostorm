@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\Species;
-use App\Models\SpeciesGenome;
+use App\Evostorm\Models\Species;
+use App\Evostorm\Models\SpeciesGenome;
 
 class SpeciesTablesSeeder extends Seeder {
 

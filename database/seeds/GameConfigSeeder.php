@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\GameConfig;
+use App\Evostorm\Models\GameConfig;
 
 class GameConfigSeeder extends Seeder
 {

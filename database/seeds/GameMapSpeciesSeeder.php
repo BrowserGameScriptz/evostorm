@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Models\GameMap;
-use App\Enums\NativeSpeciesEnum;
-use App\Enums\TileTypeEnum;
+use App\Evostorm\Models\GameMap;
+use App\Evostorm\Enums\NativeSpeciesEnum;
+use App\Evostorm\Enums\TileTypeEnum;
 use Illuminate\Support\Facades\Log;
 
 class GameMapSpeciesSeeder extends Seeder {

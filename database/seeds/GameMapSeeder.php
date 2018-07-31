@@ -2,12 +2,12 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Models\GameMap;
-use App\Models\GameMapUserArea;
-use App\Enums\GameConfigEnum;
-use App\Models\GameConfig;
-use App\Enums\TileTypeEnum;
-use App\Enums\ResourcesEnum;
+use App\Evostorm\Models\GameMap;
+use App\Evostorm\Models\GameMapUserArea;
+use App\Evostorm\Enums\GameConfigEnum;
+use App\Evostorm\Models\GameConfig;
+use App\Evostorm\Enums\TileTypeEnum;
+use App\Evostorm\Enums\ResourcesEnum;
 
 class GameMapSeeder extends Seeder {
 

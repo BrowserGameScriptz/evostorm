@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\BuildingType;
-use App\Models\BuildingStatus;
+use App\Evostorm\Models\BuildingType;
+use App\Evostorm\Models\BuildingStatus;
 
 class BuildingSeeder extends Seeder {
 

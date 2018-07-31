@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\User;
-use App\Facades\GameMapFacade;
-use App\Facades\ResourcesFacade;
+use App\Evostorm\Models\User;
+use App\Evostorm\Facades\GameMapFacade;
+use App\Evostorm\Facades\ResourcesFacade;
 
 class UsersTableSeeder extends Seeder {
 

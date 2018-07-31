@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\TileType;
+use App\Evostorm\Models\TileType;
 
 class TileTypeSeeder extends Seeder {
 

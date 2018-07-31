@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\BuildingLevel;
-use App\Enums\BuildingTypeEnum;
+use App\Evostorm\Models\BuildingLevel;
+use App\Evostorm\Enums\BuildingTypeEnum;
 
 class BuildingLevelsTableSeeder extends Seeder {
 
