@@ -1,54 +1,60 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Evostorm\Models\User;
 use App\Evostorm\Facades\GameMapFacade;
 use App\Evostorm\Facades\ResourcesFacade;
+use App\Evostorm\Repositories\UserRepositoryInterface;
 
-class UsersTableSeeder extends Seeder {
+class UsersTableSeeder extends Seeder
+{
 
     protected $gameMapFacade, $resourcesFacade;
+    protected $userRepository;
 
-    public function __construct(GameMapFacade $gameMapFacade, ResourcesFacade $resourcesFacade) {
+    public function __construct(GameMapFacade $gameMapFacade,
+                                ResourcesFacade $resourcesFacade,
+                                UserRepositoryInterface $userRepository)
+    {
         $this->gameMapFacade = $gameMapFacade;
         $this->resourcesFacade = $resourcesFacade;
+        $this->userRepository = $userRepository;
     }
 
-    public function run() {
-        $user = User::create([
-                    'id' => 1,
-                    'name' => "God",
-                    'email' => 'god@gotae.com',
-                    'password' => bcrypt('password'),
+    public function run()
+    {
+        $this->userRepository->create([
+            'id' => 1,
+            'name' => "God",
+            'email' => 'god@gotae.com',
+            'password' => 'password',
         ]);
 
-        $user = User::create([
-                    'name' => "damianw",
-                    'email' => 'd.m.winiarski@gmail.com',
-                    'password' => bcrypt('password'),
-        ]);
-
-        $this->gameMapFacade->assignRandomTerrain($user);
-        $this->resourcesFacade->assignStartingResources($user);
-
-        $user = User::create([
-                    'name' => "tim",
-                    'email' => 'tim@gotae.com',
-                    'password' => bcrypt('password'),
+        $user = $this->userRepository->create([
+            'name' => "damianw",
+            'email' => 'd.m.winiarski@gmail.com',
+            'password' => 'password',
         ]);
 
         $this->gameMapFacade->assignRandomTerrain($user);
         $this->resourcesFacade->assignStartingResources($user);
 
-        $user = User::create([
-                    'name' => "jim",
-                    'email' => 'jim@gotae.com',
-                    'password' => bcrypt('password'),
+        $user = $this->userRepository->create([
+            'name' => "tim",
+            'email' => 'tim@gotae.com',
+            'password' => 'password',
+        ]);
+
+        $this->gameMapFacade->assignRandomTerrain($user);
+        $this->resourcesFacade->assignStartingResources($user);
+
+        $user = $this->userRepository->create([
+            'name' => "jim",
+            'email' => 'jim@gotae.com',
+            'password' => 'password',
         ]);
 
         $this->gameMapFacade->assignRandomTerrain($user);
         $this->resourcesFacade->assignStartingResources($user);
     }
 
-//put your code here
 }
