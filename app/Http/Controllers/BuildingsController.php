@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Evostorm\Facades\Contracts\BuildingsFacadeInterface;
 use Illuminate\Http\Request;
 use App\Evostorm\Models\UserHasSpecies;
-use App\Evostorm\Facades\BuildingsFacade;
 use App\Evostorm\Models\GameMap;
 use App\Evostorm\Models\BuildingLevel;
 use App\Evostorm\Models\Building;
@@ -25,7 +25,7 @@ class BuildingsController extends Controller
      *
      * @return void
      */
-    public function __construct(BuildingsFacade $buildingsFacade)
+    public function __construct(BuildingsFacadeInterface $buildingsFacade)
     {
         $this->buildingsFacade = $buildingsFacade;
         $this->middleware('auth');

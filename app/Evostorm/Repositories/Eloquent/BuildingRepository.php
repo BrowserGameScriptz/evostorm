@@ -13,4 +13,10 @@ class BuildingRepository extends AbstractRepository implements BuildingRepositor
         $this->model = $model;
     }
 
+    public function findIdByTileId($tile_id)
+    {
+        return $this->model->where('game_map_id', $tile_id)->select('id')->first();
+    }
+
+
 }

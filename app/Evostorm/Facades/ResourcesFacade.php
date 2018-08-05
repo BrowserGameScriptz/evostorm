@@ -2,6 +2,7 @@
 
 namespace App\Evostorm\Facades;
 
+use App\Evostorm\Facades\Contracts\ResourcesFacadeInterface;
 use App\Evostorm\Models\User;
 use App\Evostorm\Enums\GameConfigEnum;
 use App\Evostorm\Models\GameConfig;
@@ -11,9 +12,11 @@ use App\Evostorm\Models\GameConfig;
  *
  * @author damian
  */
-class ResourcesFacade {
+class ResourcesFacade implements ResourcesFacadeInterface
+{
 
-    public function assignStartingResources(User $user) {
+    public function assignStartingResources(User $user)
+    {
         $user->amount_gold = GameConfig::find(GameConfigEnum::RESOURCE_GOLD_STARTING_AMOUNT)->value;
         $user->amount_uranium = GameConfig::find(GameConfigEnum::RESOURCE_URANIUM_STARTING_AMOUNT)->value;
         $user->amount_food = GameConfig::find(GameConfigEnum::RESOURCE_FOOD_STARTING_AMOUNT)->value;

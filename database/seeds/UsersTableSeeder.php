@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Evostorm\Facades\GameMapFacade;
-use App\Evostorm\Facades\ResourcesFacade;
+use App\Evostorm\Facades\Contracts\GameMapFacadeInterface;
+use App\Evostorm\Facades\Contracts\ResourcesFacadeInterface;
 use App\Evostorm\Repositories\UserRepositoryInterface;
 
 class UsersTableSeeder extends Seeder
@@ -11,8 +11,8 @@ class UsersTableSeeder extends Seeder
     protected $gameMapFacade, $resourcesFacade;
     protected $userRepository;
 
-    public function __construct(GameMapFacade $gameMapFacade,
-                                ResourcesFacade $resourcesFacade,
+    public function __construct(GameMapFacadeInterface $gameMapFacade,
+                                ResourcesFacadeInterface $resourcesFacade,
                                 UserRepositoryInterface $userRepository)
     {
         $this->gameMapFacade = $gameMapFacade;

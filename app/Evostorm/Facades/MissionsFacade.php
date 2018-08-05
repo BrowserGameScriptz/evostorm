@@ -2,6 +2,7 @@
 
 namespace App\Evostorm\Facades;
 
+use App\Evostorm\Facades\Contracts\MissionsFacadeInterface;
 use App\Evostorm\Models\MissionCost;
 use App\Evostorm\Models\User;
 use DB;
@@ -13,7 +14,7 @@ use App\Config\MissionConfigEnum;
  *
  * @author damian
  */
-class MissionsFacade
+class MissionsFacade implements MissionsFacadeInterface
 {
 
     public function checkEnoughResourcesForMission(MissionCost $cost, User $user)

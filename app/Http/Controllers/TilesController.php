@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Evostorm\Repositories\BuildingRepositoryInterface;
+use App\Evostorm\Repositories\GameMapRepositoryInterface;
 use App\Evostorm\Models\MissionQueue;
-use App\Evostorm\Models\GameMap;
-use App\Evostorm\Models\BuildingLevel;
-use App\Evostorm\Models\Building;
 use App\Evostorm\Models\Mission;
 use App\Evostorm\Enums\MissionTypeEnum;
 use App\Evostorm\Enums\MissionStatusEnum;
@@ -17,19 +15,24 @@ use DB;
 class TilesController extends Controller
 {
 
+    private $gameMapRepository, $buildingRepository;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(GameMapRepositoryInterface $gameMapRepository,
+                                BuildingRepositoryInterface $buildingRepository)
     {
         $this->middleware('auth');
+        $this->gameMapRepository = $gameMapRepository;
+        $this->buildingRepository = $buildingRepository;
     }
 
     public function getTileInfo($id)
     {
-        $tile = GameMap::where('id', $id)->where('user_id', Auth::user()->id)->first();
+        $tile = $this->gameMapRepository->findByIdAndUserId($id, Auth::user()->id);
         $is_occupied = false;
         $is_capture_mission_possible = true;
         $is_estimate_resource_mission_in_progress = false;
@@ -37,12 +40,10 @@ class TilesController extends Controller
         $capture_mission = (object)[];
         $estimate_mission = (object)[];
         if ($tile) {
-            $building_check = Building::where('game_map_id', $tile->id)->select('id')->first();
+            $building_check = $this->buildingRepository->findIdByTileId($tile->id);
             if ($building_check) {
                 $is_occupied = true;
             }
-
-            $building = '';
 
             $building = DB::select(DB::raw(
                 "SELECT bt.name AS building_name, 
@@ -125,5 +126,5 @@ WHERE tile_type_id=:tile_type_id) AND bl.level=1"), array('tile_type_id' => $til
             ]);
         }
     }
-
+    
 }

@@ -2,20 +2,23 @@
 
 namespace App\Evostorm\Facades;
 
+use App\Evostorm\Facades\Contracts\GameMapFacadeInterface;
 use App\Evostorm\Models\User;
 use App\Evostorm\Models\GameMap;
 use App\Evostorm\Models\GameMapUserArea;
 use App\Evostorm\Models\GameConfig;
 use App\Evostorm\Enums\GameConfigEnum;
 
-class GameMapFacade {
+class GameMapFacade implements GameMapFacadeInterface
+{
 
     /**
      * This function assigns a random area of the game map to the user who
      * has just registered
      * @param User $user
      */
-    public function assignRandomTerrain(User $user) {
+    public function assignRandomTerrain(User $user)
+    {
         $gameMapUserArea = GameMapUserArea::where('is_used', false)->inRandomOrder()->first();
         $gameMapUserArea->user_id = $user->id;
         $gameMapUserArea->is_used = true;

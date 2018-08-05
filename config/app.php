@@ -177,6 +177,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Evostorm\Providers\RepositoryServiceProvider::class,
+        App\Evostorm\Providers\FacadeServiceProvider::class,
 
     ],
 

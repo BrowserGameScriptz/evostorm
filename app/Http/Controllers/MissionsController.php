@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Evostorm\Facades\Contracts\MissionsFacadeInterface;
 use App\Evostorm\Repositories\MissionRepositoryInterface;
 use App\Evostorm\Models\GameMap;
 use App\Evostorm\Models\Mission;
@@ -9,7 +10,6 @@ use App\Evostorm\Models\MissionQueue;
 use App\Evostorm\Models\MissionCost;
 use App\Evostorm\Enums\MissionTypeEnum;
 use App\Evostorm\Enums\MissionStatusEnum;
-use App\Evostorm\Facades\MissionsFacade;
 use Carbon\Carbon;
 use Auth;
 use DB;
@@ -20,7 +20,7 @@ class MissionsController extends Controller
     protected $missionsFacade;
     protected $missionsRepository;
 
-    public function __construct(MissionsFacade $missionsFacade, MissionRepositoryInterface $missionRepository)
+    public function __construct(MissionsFacadeInterface $missionsFacade, MissionRepositoryInterface $missionRepository)
     {
         $this->missionsFacade = $missionsFacade;
         $this->missionsRepository = $missionRepository;

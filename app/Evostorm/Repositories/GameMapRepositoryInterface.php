@@ -5,5 +5,7 @@ namespace App\Evostorm\Repositories;
 
 interface GameMapRepositoryInterface
 {
-    public function getUserGameMapTiles($user_id);
+    public function findListByUserId($user_id);
+
+    public function findByIdAndUserId($id, $user_id);
 }

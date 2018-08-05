@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Evostorm\Facades\Contracts\MissionsFacadeInterface;
 use Illuminate\Console\Command;
 use App\Evostorm\Models\MissionQueue;
 use App\Evostorm\Models\Mission;
@@ -10,7 +11,6 @@ use App\Evostorm\Enums\MissionTypeEnum;
 use App\Evostorm\Enums\MissionStatusEnum;
 use App\Evostorm\Models\GameMap;
 use App\Evostorm\Models\UserHasSpecies;
-use App\Evostorm\Facades\MissionsFacade;
 use Carbon\Carbon;
 use DB;
 use Log;
@@ -38,7 +38,7 @@ class CheckMissionQueue extends Command
      *
      * @return void
      */
-    public function __construct(MissionsFacade $missionsFacade)
+    public function __construct(MissionsFacadeInterface $missionsFacade)
     {
         $this->missionsFacade = $missionsFacade;
         parent::__construct();

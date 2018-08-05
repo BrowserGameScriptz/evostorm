@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Evostorm\Repositories\GameConfigRepositoryInterface;
 use App\Evostorm\Repositories\GameMapRepositoryInterface;
-use Illuminate\Http\Request;
 use App\Evostorm\Enums\GameConfigEnum;
-use App\Evostorm\Models\GameConfig;
 use DB;
 use Auth;
 
@@ -18,26 +17,29 @@ class GameMapController extends Controller
 {
 
     private $gameMapRepository;
+    private $gameConfigRepository;
 
     /**
      * GameMapController constructor.
      * @param $gameMapRepository
      */
-    public function __construct(GameMapRepositoryInterface $gameMapRepository)
+    public function __construct(GameMapRepositoryInterface $gameMapRepository,
+                                GameConfigRepositoryInterface $gameConfigRepository)
     {
         $this->gameMapRepository = $gameMapRepository;
+        $this->gameConfigRepository = $gameConfigRepository;
     }
 
 
     public function getUserMap()
     {
 
-        $tiles = $this->gameMapRepository->getUserGameMapTiles(Auth::user()->id);
+        $tiles = $this->gameMapRepository->findListByUserId(Auth::user()->id);
 
         return response()->json([
-            'user_map_width' => GameConfig::find(GameConfigEnum::USER_MAP_WIDTH)->value,
-            'user_map_height' => GameConfig::find(GameConfigEnum::USER_MAP_HEIGHT)->value,
-            'user_map_tile_radius' => GameConfig::find(GameConfigEnum::USER_MAP_TILE_RADIUS)->value,
+            'user_map_width' => $this->gameConfigRepository->findById(GameConfigEnum::USER_MAP_WIDTH)->value,
+            'user_map_height' => $this->gameConfigRepository->findById(GameConfigEnum::USER_MAP_HEIGHT)->value,
+            'user_map_tile_radius' => $this->gameConfigRepository->findById(GameConfigEnum::USER_MAP_TILE_RADIUS)->value,
             'tiles' => $tiles
         ]);
     }

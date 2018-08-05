@@ -47,5 +47,10 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Evostorm\Repositories\SpeciesRepositoryInterface',
             'App\Evostorm\Repositories\Eloquent\SpeciesRepository'
         );
+
+        $this->app->bind(
+            'App\Evostorm\Repositories\GameConfigRepositoryInterface',
+            'App\Evostorm\Repositories\Eloquent\GameConfigRepository'
+        );
     }
 }
