@@ -20,7 +20,7 @@ class CreateGameMapTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('game_map', function (Blueprint $table) {
+        Schema::create('tiles', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('coord_x');
             $table->integer('coord_y');

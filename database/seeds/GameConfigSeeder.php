@@ -13,8 +13,8 @@ class GameConfigSeeder extends Seeder
      */
     public function run()
     {
-        GameConfig::create(array("id" => 1, "param" => "MAP_X_SIZE", "value" => 20));
-        GameConfig::create(array("id" => 2, "param" => "MAP_Y_SIZE", "value" => 20));
+        GameConfig::create(array("id" => 1, "param" => "MAP_X_SIZE", "value" => 60));
+        GameConfig::create(array("id" => 2, "param" => "MAP_Y_SIZE", "value" => 60));
         GameConfig::create(array("id" => 3, "param" => "USER_MAP_WIDTH", "value" => 10));
         GameConfig::create(array("id" => 4, "param" => "USER_MAP_HEIGHT", "value" => 10));
 

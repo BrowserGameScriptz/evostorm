@@ -15,7 +15,7 @@ class BuildingRepository extends AbstractRepository implements BuildingRepositor
 
     public function findIdByTileId($tile_id)
     {
-        return $this->model->where('game_map_id', $tile_id)->select('id')->first();
+        return $this->model->where('tile_id', $tile_id)->select('id')->first();
     }
 
 

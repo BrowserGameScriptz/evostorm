@@ -58,8 +58,8 @@ class CreateBuildingsTables extends Migration {
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->unsignedInteger('game_map_id');
-            $table->foreign('game_map_id')->references('id')->on('game_map')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->unsignedInteger('tile_id');
+            $table->foreign('tile_id')->references('id')->on('tiles')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->unsignedInteger('building_level_id');
             $table->foreign('building_level_id')->references('id')->on('building_levels')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->unsignedInteger('building_status_id')->default(BuildingStatusEnum::BUILDING_IN_PROGRESS);

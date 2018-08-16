@@ -59,7 +59,7 @@ FROM buildings b
 LEFT JOIN building_levels bl ON bl.id=b.building_level_id
 LEFT JOIN building_types bt ON bt.id=bl.building_type_id
 LEFT JOIN building_status bs ON bs.id=b.building_status_id
-WHERE b.game_map_id=:tile_id LIMIT 1"), array('tile_id' => $tile->id));
+WHERE b.tile_id=:tile_id LIMIT 1"), array('tile_id' => $tile->id));
 
             if ($building) {
                 $building = $building[0];
@@ -126,5 +126,5 @@ WHERE tile_type_id=:tile_type_id) AND bl.level=1"), array('tile_type_id' => $til
             ]);
         }
     }
-    
+
 }

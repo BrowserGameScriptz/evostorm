@@ -4,9 +4,9 @@ namespace App\Evostorm\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GameMap extends Model {
+class Tile extends Model {
 
-    protected $table = 'game_map';
+    protected $table = 'tiles';
     public $timestamps = true;
     
     public function species() {

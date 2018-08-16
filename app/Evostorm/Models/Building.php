@@ -17,7 +17,7 @@ class Building extends Model
 
     public function tile()
     {
-        return $this->hasOne('App\Evostorm\Models\GameMap', 'id', 'game_map_id');
+        return $this->hasOne('App\Evostorm\Models\Tile', 'id', 'tile_id');
     }
 
     public function status()

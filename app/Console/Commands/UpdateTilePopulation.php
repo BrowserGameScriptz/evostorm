@@ -36,7 +36,7 @@ class UpdateTilePopulation extends Command {
      * @return mixed
      */
     public function handle() {
-        $affected = DB::update('UPDATE game_map AS gm
+        $affected = DB::update('UPDATE tiles AS gm
 LEFT JOIN species s ON s.id=gm.species_id SET gm.species_amount= CEIL((((CAST(s.reproduction AS SIGNED)-CAST(s.death_rate AS SIGNED))/100)* RAND())*(gm.species_amount/2))+gm.species_amount
 WHERE gm.species_amount>0;');
     }

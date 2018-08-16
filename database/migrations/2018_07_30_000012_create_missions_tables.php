@@ -45,7 +45,7 @@ class CreateMissionsTables extends Migration
             $table->unsignedInteger('mission_status_id');
             $table->foreign('mission_status_id')->references('id')->on('mission_status')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->unsignedInteger('tile_id')->nullable();
-            $table->foreign('tile_id')->references('id')->on('game_map')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('tile_id')->references('id')->on('tiles')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->text('result')->nullable();
             $table->timestamp('finished_at')->nullable();
             $table->timestamps();

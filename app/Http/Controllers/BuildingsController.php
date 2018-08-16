@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Evostorm\Facades\Contracts\BuildingsFacadeInterface;
 use Illuminate\Http\Request;
 use App\Evostorm\Models\UserHasSpecies;
-use App\Evostorm\Models\GameMap;
+use App\Evostorm\Models\Tile;
 use App\Evostorm\Models\BuildingLevel;
 use App\Evostorm\Models\Building;
 use App\Evostorm\Models\BuildingQueue;
@@ -34,7 +34,7 @@ class BuildingsController extends Controller
     public function build($building_level_id, $tile_id)
     {
         // Check if tile exists and belongs to authenticated user
-        $tile = GameMap::where('id', $tile_id)->where('user_id', Auth::user()->id)->first();
+        $tile = Tile::where('id', $tile_id)->where('user_id', Auth::user()->id)->first();
         if (!$tile) {
             return $this->error("The given tile does not exist or you don't have permissions to it.");
         }
@@ -62,7 +62,7 @@ class BuildingsController extends Controller
         // Creating the building
         $building = new Building();
         $building->user_id = $tile->user_id;
-        $building->game_map_id = $tile->id;
+        $building->tile_id = $tile->id;
         $building->building_level_id = $buildingLevel->id;
         $building->building_status_id = BuildingStatusEnum::BUILDING_IN_PROGRESS;
         if (!$building->save()) {

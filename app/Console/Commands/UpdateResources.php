@@ -45,7 +45,7 @@ amount_uranium=amount_uranium+(balance_uranium),
 amount_food=amount_food+(balance_food),
 amount_workforce=amount_workforce+(balance_workforce),
 amount_kegrum=amount_kegrum+(balance_kegrum);");
-        DB::update("UPDATE game_map SET 
+        DB::update("UPDATE tiles SET 
 gold_left=gold_left-gold_usage,
 uranium_left=uranium_left-uranium_usage,
 kegrum_left=kegrum_left-kegrum_usage where is_used=true;");

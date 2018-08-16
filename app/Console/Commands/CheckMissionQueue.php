@@ -9,7 +9,7 @@ use App\Evostorm\Models\Mission;
 use App\Evostorm\Models\User;
 use App\Evostorm\Enums\MissionTypeEnum;
 use App\Evostorm\Enums\MissionStatusEnum;
-use App\Evostorm\Models\GameMap;
+use App\Evostorm\Models\Tile;
 use App\Evostorm\Models\UserHasSpecies;
 use Carbon\Carbon;
 use DB;
@@ -74,7 +74,7 @@ class CheckMissionQueue extends Command
                     switch ($mission->mission_type_id) {
                         case MissionTypeEnum::CAPTURE_WORKERS:
                             {
-                                $tile = GameMap::find($mission->tile_id);
+                                $tile = Tile::find($mission->tile_id);
                                 $amount_captured = rand(0, $tile->species_amount);
                                 if ($amount_captured > 0) {
                                     $tile->species_amount = $tile->species_amount - $amount_captured;
@@ -117,7 +117,7 @@ class CheckMissionQueue extends Command
                                 break;
                             }
                         case MissionTypeEnum::ESTIMATE_RESOURCES:
-                            $tile = GameMap::find($mission->tile_id);
+                            $tile = Tile::find($mission->tile_id);
                             $tile->is_resources_estimated = true;
                             if (!$tile->save()) {
                                 DB::rollback();

@@ -4,7 +4,7 @@ namespace App\Evostorm\Facades;
 
 use App\Evostorm\Facades\Contracts\GameMapFacadeInterface;
 use App\Evostorm\Models\User;
-use App\Evostorm\Models\GameMap;
+use App\Evostorm\Models\Tile;
 use App\Evostorm\Models\GameMapUserArea;
 use App\Evostorm\Models\GameConfig;
 use App\Evostorm\Enums\GameConfigEnum;
@@ -26,7 +26,7 @@ class GameMapFacade implements GameMapFacadeInterface
 
         for ($x = $gameMapUserArea->starting_coord_x; $x < $gameMapUserArea->starting_coord_x + GameConfig::find(GameConfigEnum::USER_MAP_WIDTH)->value; $x++) {
             for ($y = $gameMapUserArea->starting_coord_y; $y < $gameMapUserArea->starting_coord_y + GameConfig::find(GameConfigEnum::USER_MAP_HEIGHT)->value; $y++) {
-                $gm = GameMap::where('coord_x', $x)->where('coord_y', $y)->first();
+                $gm = Tile::where('coord_x', $x)->where('coord_y', $y)->first();
                 $gm->is_used = true;
                 $gm->user_id = $user->id;
 

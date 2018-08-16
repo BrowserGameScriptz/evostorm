@@ -12,7 +12,7 @@ class AlterGameMapSpeciesTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::table('game_map', function (Blueprint $table) {
+        Schema::table('tiles', function (Blueprint $table) {
             $table->unsignedInteger('species_id')->after('tile_type_id')->nullable();
             $table->foreign('species_id')->references('id')->on('species')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->unsignedInteger('species_amount')->after('species_id')->default(0);

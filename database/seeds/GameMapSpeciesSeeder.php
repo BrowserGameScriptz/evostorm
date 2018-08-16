@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Evostorm\Models\GameMap;
+use App\Evostorm\Models\Tile;
 use App\Evostorm\Enums\NativeSpeciesEnum;
 use App\Evostorm\Enums\TileTypeEnum;
 use Illuminate\Support\Facades\Log;
@@ -17,7 +17,7 @@ class GameMapSpeciesSeeder extends Seeder {
     public function run() {
         DB::beginTransaction();
 
-        GameMap::where('tile_type_id', '<>', TileTypeEnum::WATER)->chunk(1000, function($tiles) {
+        Tile::where('tile_type_id', '<>', TileTypeEnum::WATER)->chunk(1000, function($tiles) {
             foreach ($tiles as $tile) {
                 $tile->species_id = NativeSpeciesEnum::HOMUS_ALIBONUS;
                 $tile->species_amount = $this->getRandomSpeciesAmount($tile->tile_type_id);

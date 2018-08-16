@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Evostorm\Facades\Contracts\MissionsFacadeInterface;
 use App\Evostorm\Repositories\MissionRepositoryInterface;
-use App\Evostorm\Models\GameMap;
+use App\Evostorm\Models\Tile;
 use App\Evostorm\Models\Mission;
 use App\Evostorm\Models\MissionQueue;
 use App\Evostorm\Models\MissionCost;
@@ -30,7 +30,7 @@ class MissionsController extends Controller
     public function sendForCaptureMission($tile_id)
     {
         // Check if tile exists and belongs to authenticated user
-        $tile = GameMap::where('id', $tile_id)
+        $tile = Tile::where('id', $tile_id)
             ->where('user_id', Auth::user()->id)
             ->first();
         if (!$tile) {
@@ -97,7 +97,7 @@ class MissionsController extends Controller
     public function sendForResourcesEstimationMission($tile_id)
     {
         // Check if tile exists and belongs to authenticated user
-        $tile = GameMap::where('id', $tile_id)
+        $tile = Tile::where('id', $tile_id)
             ->where('user_id', Auth::user()->id)
             ->first();
         if (!$tile) {
@@ -170,7 +170,7 @@ class MissionsController extends Controller
         foreach ($missions as $m) {
             $o = (object)[];
 
-            $tile = GameMap::find($m->tile_id);
+            $tile = Tile::find($m->tile_id);
 
             $o->id = $m->id;
             $o->status = $m->status->name;

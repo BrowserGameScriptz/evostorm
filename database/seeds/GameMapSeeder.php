@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Evostorm\Models\GameMap;
+use App\Evostorm\Models\Tile;
 use App\Evostorm\Models\GameMapUserArea;
 use App\Evostorm\Enums\GameConfigEnum;
 use App\Evostorm\Models\GameConfig;
@@ -24,7 +24,7 @@ class GameMapSeeder extends Seeder {
             for ($y = 0; $y < GameConfig::find(GameConfigEnum::MAP_Y_SIZE)->value; $y++) {
 
                 $tile_id = $this->getRandomTerrainType();
-                GameMap::create(
+                Tile::create(
                         array(
                             "coord_x" => $x,
                             "coord_y" => $y,
