@@ -29,6 +29,17 @@ class MissionsController extends Controller
 
     public function sendForCaptureMission($tile_id)
     {
+        /**
+         * Steps
+         * 1. Check if tile exists and belongs to authenticated user
+         * 2. Check if there is more than 0 individuals on this tile
+         * 3. Check if there is already an capture mission on this tile
+         * 4. Check if the user has enough resources for this mission
+         * 5. Create mission
+         * 6. Put mission on missions queue
+         * 7. Update user resources
+         */
+
         // Check if tile exists and belongs to authenticated user
         $tile = Tile::where('id', $tile_id)
             ->where('user_id', Auth::user()->id)
@@ -96,6 +107,17 @@ class MissionsController extends Controller
 
     public function sendForResourcesEstimationMission($tile_id)
     {
+        /**
+         * Steps
+         * 1. Check if tile exists and belongs to authenticated user
+         * 2. Check if resources are already estimated on this tile
+         * 3. Check if there is already resource estimation mission on this tile
+         * 4. Check if the user has enough resources for this mission
+         * 5. Create mission
+         * 6. Put mission on missions queue
+         * 7. Update user resources
+         */
+
         // Check if tile exists and belongs to authenticated user
         $tile = Tile::where('id', $tile_id)
             ->where('user_id', Auth::user()->id)
@@ -108,7 +130,7 @@ class MissionsController extends Controller
             return $this->error("The resources on this tile are already estimated.");
         }
 
-        // Checking if there is a capture mission on this tile
+        // Checking if there is resource estimation mission on this tile
         $mission = Mission::where('mission_type_id', MissionTypeEnum::ESTIMATE_RESOURCES)
             ->where('mission_status_id', MissionStatusEnum::IN_PROGRESS)
             ->where('tile_id', $tile->id)->first();

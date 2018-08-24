@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Evostorm\Facades\Contracts\BuildingsFacadeInterface;
-use Illuminate\Http\Request;
 use App\Evostorm\Models\UserHasSpecies;
 use App\Evostorm\Models\Tile;
 use App\Evostorm\Models\BuildingLevel;
@@ -11,9 +10,11 @@ use App\Evostorm\Models\Building;
 use App\Evostorm\Models\BuildingQueue;
 use App\Evostorm\Enums\BuildingStatusEnum;
 use App\Evostorm\Models\BuildingWorker;
+use App\Jobs\BuildBuilding;
 use Auth;
 use Carbon\Carbon;
 use DB;
+use Log;
 
 class BuildingsController extends Controller
 {
@@ -28,76 +29,17 @@ class BuildingsController extends Controller
     public function __construct(BuildingsFacadeInterface $buildingsFacade)
     {
         $this->buildingsFacade = $buildingsFacade;
-        $this->middleware('auth');
     }
 
     public function build($building_level_id, $tile_id)
     {
-        // Check if tile exists and belongs to authenticated user
-        $tile = Tile::where('id', $tile_id)->where('user_id', Auth::user()->id)->first();
-        if (!$tile) {
-            return $this->error("The given tile does not exist or you don't have permissions to it.");
-        }
-
-        // Check if building level exists
-        $buildingLevel = BuildingLevel::where('id', $building_level_id)->where('level', 1)->first();
-        if (!$buildingLevel) {
-            return $this->error("The given building does not exist.");
-        }
-
-        // Now check if we can build a building of this type on this tile
-        $is_allowed = $this->buildingsFacade->checkBuildingAllowedToBuildOnTile($buildingLevel, $tile);
-        if (!$is_allowed) {
-            return $this->error("You can't build this building on this tile type.");
-        }
-
-        // Check if user has enough resources to build this building
-        $has_resources = $this->buildingsFacade->checkEnoughResourcesToBuild($buildingLevel, Auth::user());
-        if (!$has_resources) {
-            return $this->error("You don't have enough resources to build this building.");
-        }
-
-        DB::beginTransaction();
-
-        // Creating the building
-        $building = new Building();
-        $building->user_id = $tile->user_id;
-        $building->tile_id = $tile->id;
-        $building->building_level_id = $buildingLevel->id;
-        $building->building_status_id = BuildingStatusEnum::BUILDING_IN_PROGRESS;
-        if (!$building->save()) {
+        try {
+            DB::beginTransaction();
+            $this->dispatch(new BuildBuilding($building_level_id, $tile_id));
+        } catch (\Exception $e) {
             DB::rollback();
             return $this->saveError();
         }
-
-        // Updating resources
-        $user = Auth::user();
-        $user->amount_gold = $user->amount_gold - $buildingLevel->gold_cost;
-        $user->amount_uranium = $user->amount_uranium - $buildingLevel->uranium_cost;
-        $user->amount_kegrum = $user->amount_kegrum - $buildingLevel->kegrum_cost;
-        if (!$user->save()) {
-            DB::rollback();
-            return $this->saveError();
-        }
-
-        // Adding to the building queue
-        $queue = new BuildingQueue();
-        $queue->building_id = $building->id;
-        $queue->finish_time = Carbon::now('Europe/Warsaw')->addMinutes($buildingLevel->build_time);
-
-        if (!$queue->save()) {
-            DB::rollback();
-            return $this->saveError();
-        }
-
-        // Erasing tile's population (construction causes all individuals to die)
-        $tile->species_id = null;
-        $tile->species_amount = 0;
-        if (!$tile->save()) {
-            DB::rollback();
-            return $this->saveError();
-        }
-
         DB::commit();
         return response()->json([
             'success' => "success"
@@ -193,16 +135,6 @@ class BuildingsController extends Controller
         } else {
 
         }
-    }
-
-    public function upgrade()
-    {
-
-    }
-
-    public function destroy()
-    {
-
     }
 
 }
