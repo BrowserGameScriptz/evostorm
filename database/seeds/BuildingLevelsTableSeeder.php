@@ -3,17 +3,24 @@
 use Illuminate\Database\Seeder;
 use App\Evostorm\Models\BuildingLevel;
 use App\Evostorm\Enums\BuildingTypeEnum;
+use App\Evostorm\Models\Cost;
 
-class BuildingLevelsTableSeeder extends Seeder {
+class BuildingLevelsTableSeeder extends Seeder
+{
 
-    protected function createBuildingLevel($id, $building_type_id, $level, $gold_cost, $uranium_cost, $kegrum_cost, $base_gold_production, $base_uranium_production, $base_kegrum_production, $base_gold_upkeep, $base_uranium_upkeep, $base_kegrum_upkeep, $base_energy_consumption, $base_energy_production, $min_workers_amount, $max_workers_amount, $build_time) {
+    protected function createBuildingLevel($id, $building_type_id, $level, $gold_cost, $uranium_cost, $kegrum_cost, $base_gold_production, $base_uranium_production, $base_kegrum_production, $base_gold_upkeep, $base_uranium_upkeep, $base_kegrum_upkeep, $base_energy_consumption, $base_energy_production, $min_workers_amount, $max_workers_amount, $build_time)
+    {
+        $cost = Cost::create(array(
+            'gold' => $gold_cost,
+            'uranium' => $uranium_cost,
+            'kegrum' => $kegrum_cost,
+            'time' => $build_time
+        ));
+
         BuildingLevel::create(array(
             'id' => $id,
             'building_type_id' => $building_type_id,
             'level' => $level,
-            'gold_cost' => $gold_cost,
-            'uranium_cost' => $uranium_cost,
-            'kegrum_cost' => $kegrum_cost,
             'base_gold_production' => $base_gold_production,
             'base_uranium_production' => $base_uranium_production,
             'base_kegrum_production' => $base_kegrum_production,
@@ -24,8 +31,9 @@ class BuildingLevelsTableSeeder extends Seeder {
             'base_energy_production' => $base_energy_production,
             'min_workers_amount' => $min_workers_amount,
             'max_workers_amount' => $max_workers_amount,
-            'build_time' => $build_time
+            'cost_id' => $cost->id
         ));
+
     }
 
     /**
@@ -33,7 +41,8 @@ class BuildingLevelsTableSeeder extends Seeder {
      *
      * @return void
      */
-    public function run() {
+    public function run()
+    {
         // Gold mine buildings
         $this->createBuildingLevel(1, BuildingTypeEnum::GOLD_MINE, 1, 300, 50, 500, 10, 0, 0, 0, 0, 0, 20, 0, 20, 100, 5);
         $this->createBuildingLevel(2, BuildingTypeEnum::GOLD_MINE, 2, 400, 100, 700, 15, 0, 0, 0, 0, 0, 40, 0, 30, 120, 30);

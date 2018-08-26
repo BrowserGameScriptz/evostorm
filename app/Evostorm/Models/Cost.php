@@ -4,9 +4,9 @@ namespace App\Evostorm\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MissionCost extends Model {
+class Cost extends Model {
 
-    protected $table = 'mission_costs';
+    protected $table = 'costs';
     public $timestamps = false;
 
 }

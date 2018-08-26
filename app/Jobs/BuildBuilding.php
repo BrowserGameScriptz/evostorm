@@ -83,9 +83,9 @@ class BuildBuilding implements ShouldQueue
 
         // Updating resources
         $user = Auth::user();
-        $user->amount_gold = $user->amount_gold - $buildingLevel->gold_cost;
-        $user->amount_uranium = $user->amount_uranium - $buildingLevel->uranium_cost;
-        $user->amount_kegrum = $user->amount_kegrum - $buildingLevel->kegrum_cost;
+        $user->amount_gold = $user->amount_gold - $buildingLevel->cost>gold;
+        $user->amount_uranium = $user->amount_uranium - $buildingLevel->cost->uranium;
+        $user->amount_kegrum = $user->amount_kegrum - $buildingLevel->cost->kegrum;
         if (!$user->save()) {
             DB::rollback();
             return $this->saveError();
@@ -94,7 +94,7 @@ class BuildBuilding implements ShouldQueue
         // Adding to the building queue
         $queue = new BuildingQueue();
         $queue->building_id = $building->id;
-        $queue->finish_time = Carbon::now('Europe/Warsaw')->addMinutes($buildingLevel->build_time);
+        $queue->finish_time = Carbon::now('Europe/Warsaw')->addMinutes($buildingLevel->cost->time);
 
         if (!$queue->save()) {
             DB::rollback();

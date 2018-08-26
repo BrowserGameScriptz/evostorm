@@ -3,8 +3,8 @@
 use Illuminate\Database\Seeder;
 use App\Evostorm\Models\MissionType;
 use App\Evostorm\Enums\MissionTypeEnum;
-use App\Evostorm\Models\MissionCost;
 use App\Evostorm\Models\MissionStatus;
+use App\Evostorm\Models\Cost;
 
 class MissionsTableSeeder extends Seeder
 {
@@ -16,31 +16,33 @@ class MissionsTableSeeder extends Seeder
      */
     public function run()
     {
+        $cost = Cost::create(array(
+            'gold' => 20,
+            'uranium' => 0,
+            'kegrum' => 0,
+            'time' => 30
+        ));
         MissionType::create(array(
-            'id' => MissionTypeEnum::CAPTURE_WORKERS,
-            'short_name' => 'CAPTURE_WORKERS',
-            'name' => 'Capture workers from tile'));
+                'id' => MissionTypeEnum::CAPTURE_WORKERS,
+                'short_name' => 'CAPTURE_WORKERS',
+                'name' => 'Capture workers from tile',
+                'cost_id' => $cost->id)
+        );
 
-        MissionCost::create(array(
-            'mission_type_id' => MissionTypeEnum::CAPTURE_WORKERS,
-            'gold_cost' => 20,
-            'uranium_cost' => 0,
-            'kegrum_cost' => 0,
-            'time_cost' => 30
+        $cost = Cost::create(array(
+            'gold' => 30,
+            'uranium' => 5,
+            'kegrum' => 5,
+            'time' => 20
         ));
 
         MissionType::create(array(
             'id' => MissionTypeEnum::ESTIMATE_RESOURCES,
             'short_name' => 'ESTIMATE_RESOURCES',
-            'name' => 'Estimate tile\'s resources amount'));
-
-        MissionCost::create(array(
-            'mission_type_id' => MissionTypeEnum::ESTIMATE_RESOURCES,
-            'gold_cost' => 30,
-            'uranium_cost' => 5,
-            'kegrum_cost' => 5,
-            'time_cost' => 20
+            'name' => 'Estimate tile\'s resources amount',
+            'cost_id' => $cost->id
         ));
+
 
         MissionStatus::create(array(
             'id' => 1,

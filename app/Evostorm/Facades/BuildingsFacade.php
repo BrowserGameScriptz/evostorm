@@ -18,7 +18,7 @@ class BuildingsFacade implements BuildingsFacadeInterface
 
     public function checkEnoughResourcesToBuild(BuildingLevel $buildingLevel, User $user)
     {
-        if ((($user->amount_gold - $buildingLevel->gold_cost) < 0) || (($user->amount_uranium - $buildingLevel->uranium_cost) < 0) || (($user->amount_kegrum - $buildingLevel->kegrum_cost) < 0)
+        if ((($user->amount_gold - $buildingLevel->cost->gold) < 0) || (($user->cost->amount_uranium - $buildingLevel->cost->uranium) < 0) || (($user->amount_kegrum - $buildingLevel->cost->kegrum) < 0)
         ) {
             return false;
         } else {

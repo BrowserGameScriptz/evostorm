@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Evostorm\Facades\Contracts\MissionsFacadeInterface;
+use App\Evostorm\Models\MissionType;
 use App\Evostorm\Repositories\MissionRepositoryInterface;
 use App\Evostorm\Models\Tile;
 use App\Evostorm\Models\Mission;
 use App\Evostorm\Models\MissionQueue;
-use App\Evostorm\Models\MissionCost;
 use App\Evostorm\Enums\MissionTypeEnum;
 use App\Evostorm\Enums\MissionStatusEnum;
 use Carbon\Carbon;
@@ -24,7 +24,6 @@ class MissionsController extends Controller
     {
         $this->missionsFacade = $missionsFacade;
         $this->missionsRepository = $missionRepository;
-        $this->middleware('auth');
     }
 
     public function sendForCaptureMission($tile_id)
@@ -61,9 +60,9 @@ class MissionsController extends Controller
         }
 
 
-        $cost = MissionCost::find(MissionTypeEnum::CAPTURE_WORKERS);
+        $cost = MissionType::find(MissionTypeEnum::CAPTURE_WORKERS)->cost;
 
-        if (!$this->missionsFacade->checkEnoughResourcesForMission($cost, Auth::user())) {
+        if (!Auth::user()->canAfford($cost)) {
             return $this->error("You don't have enough resources for this mission.");
         }
 
@@ -82,9 +81,9 @@ class MissionsController extends Controller
 
         // Updating resources
         $user = Auth::user();
-        $user->amount_gold = $user->amount_gold - $cost->gold_cost;
-        $user->amount_uranium = $user->amount_uranium - $cost->uranium_cost;
-        $user->amount_kegrum = $user->amount_kegrum - $cost->kegrum_cost;
+        $user->amount_gold = $user->amount_gold - $cost->gold;
+        $user->amount_uranium = $user->amount_uranium - $cost->uranium;
+        $user->amount_kegrum = $user->amount_kegrum - $cost->kegrum;
         if (!$user->save()) {
             DB::rollback();
             return $this->saveError();
@@ -92,7 +91,7 @@ class MissionsController extends Controller
 
         $queue = new MissionQueue();
         $queue->mission_id = $mission->id;
-        $queue->finish_time = Carbon::now('Europe/Warsaw')->addMinutes($cost->time_cost);
+        $queue->finish_time = Carbon::now('Europe/Warsaw')->addMinutes($cost->time);
         if (!$queue->save()) {
             DB::rollback();
             return $this->error("The was an error during mission creation. Please try again later.");
@@ -139,9 +138,9 @@ class MissionsController extends Controller
         }
 
 
-        $cost = MissionCost::find(MissionTypeEnum::ESTIMATE_RESOURCES);
+        $cost = MissionType::find(MissionTypeEnum::ESTIMATE_RESOURCES)->cost;
 
-        if (!$this->missionsFacade->checkEnoughResourcesForMission($cost, Auth::user())) {
+        if (!Auth::user()->canAfford($cost)) {
             return $this->error("You don't have enough resources for this mission.");
         }
 
@@ -160,9 +159,9 @@ class MissionsController extends Controller
 
         // Updating resources
         $user = Auth::user();
-        $user->amount_gold = $user->amount_gold - $cost->gold_cost;
-        $user->amount_uranium = $user->amount_uranium - $cost->uranium_cost;
-        $user->amount_kegrum = $user->amount_kegrum - $cost->kegrum_cost;
+        $user->amount_gold = $user->amount_gold - $cost->gold;
+        $user->amount_uranium = $user->amount_uranium - $cost->uranium;
+        $user->amount_kegrum = $user->amount_kegrum - $cost->kegrum;
         if (!$user->save()) {
             DB::rollback();
             return $this->saveError();
@@ -170,7 +169,7 @@ class MissionsController extends Controller
 
         $queue = new MissionQueue();
         $queue->mission_id = $mission->id;
-        $queue->finish_time = Carbon::now('Europe/Warsaw')->addMinutes($cost->time_cost);
+        $queue->finish_time = Carbon::now('Europe/Warsaw')->addMinutes($cost->time);
         if (!$queue->save()) {
             DB::rollback();
             return $this->error("The was an error during mission creation. Please try again later.");
