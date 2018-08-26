@@ -39,8 +39,8 @@ class RepositoryServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'App\Evostorm\Repositories\GameMapRepositoryInterface',
-            'App\Evostorm\Repositories\Eloquent\GameMapRepository'
+            'App\Evostorm\Repositories\TileRepositoryInterface',
+            'App\Evostorm\Repositories\Eloquent\TileRepository'
         );
 
         $this->app->bind(

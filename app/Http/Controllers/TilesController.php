@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Evostorm\Repositories\BuildingRepositoryInterface;
-use App\Evostorm\Repositories\GameMapRepositoryInterface;
+use App\Evostorm\Repositories\TileRepositoryInterface;
 use App\Evostorm\Models\MissionQueue;
 use App\Evostorm\Models\Mission;
 use App\Evostorm\Enums\MissionTypeEnum;
@@ -15,24 +15,24 @@ use DB;
 class TilesController extends Controller
 {
 
-    private $gameMapRepository, $buildingRepository;
+    private $tileRepository, $buildingRepository;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(GameMapRepositoryInterface $gameMapRepository,
+    public function __construct(TileRepositoryInterface $tileRepository,
                                 BuildingRepositoryInterface $buildingRepository)
     {
         $this->middleware('auth');
-        $this->gameMapRepository = $gameMapRepository;
+        $this->tileRepository = $tileRepository;
         $this->buildingRepository = $buildingRepository;
     }
 
     public function getTileInfo($id)
     {
-        $tile = $this->gameMapRepository->findByIdAndUserId($id, Auth::user()->id);
+        $tile = $this->tileRepository->findByIdAndUserId($id, Auth::user()->id);
         $is_occupied = false;
         $is_capture_mission_possible = true;
         $is_estimate_resource_mission_in_progress = false;

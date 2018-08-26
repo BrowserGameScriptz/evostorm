@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Evostorm\Facades\Contracts\GameMapFacadeInterface;
+use App\Evostorm\Facades\Contracts\TilesFacadeInterface;
 use App\Evostorm\Facades\Contracts\ResourcesFacadeInterface;
 use App\Evostorm\Models\User;
 use Validator;
@@ -30,16 +30,16 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
-    protected $gameMapFacade, $resourcesFacade;
+    protected $tilesFacade, $resourcesFacade;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(GameMapFacadeInterface $gameMapFacade, ResourcesFacadeInterface $resourcesFacade)
+    public function __construct(TilesFacadeInterface $tilesFacade, ResourcesFacadeInterface $resourcesFacade)
     {
-        $this->gameMapFacade = $gameMapFacade;
+        $this->tilesFacade = $tilesFacade;
         $this->resourcesFacade = $resourcesFacade;
         $this->middleware('guest');
     }
@@ -74,7 +74,7 @@ class RegisterController extends Controller
         ]);
 
 
-        $this->gameMapFacade->assignRandomTerrain($user);
+        $this->tilesFacade->assignRandomTerrain($user);
         $this->resourcesFacade->assignStartingResources($user);
 
         return $user;

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Evostorm\Repositories\GameConfigRepositoryInterface;
-use App\Evostorm\Repositories\GameMapRepositoryInterface;
+use App\Evostorm\Repositories\TileRepositoryInterface;
 use App\Evostorm\Enums\GameConfigEnum;
 use DB;
 use Auth;
@@ -16,17 +16,17 @@ use Auth;
 class GameMapController extends Controller
 {
 
-    private $gameMapRepository;
+    private $tileRepository;
     private $gameConfigRepository;
 
     /**
      * GameMapController constructor.
-     * @param $gameMapRepository
+     * @param $tileRepository
      */
-    public function __construct(GameMapRepositoryInterface $gameMapRepository,
+    public function __construct(TileRepositoryInterface $tileRepository,
                                 GameConfigRepositoryInterface $gameConfigRepository)
     {
-        $this->gameMapRepository = $gameMapRepository;
+        $this->tileRepository = $tileRepository;
         $this->gameConfigRepository = $gameConfigRepository;
     }
 
@@ -34,7 +34,7 @@ class GameMapController extends Controller
     public function getUserMap()
     {
 
-        $tiles = $this->gameMapRepository->findListByUserId(Auth::user()->id);
+        $tiles = $this->tileRepository->findListByUserId(Auth::user()->id);
 
         return response()->json([
             'user_map_width' => $this->gameConfigRepository->findById(GameConfigEnum::USER_MAP_WIDTH)->value,

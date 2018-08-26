@@ -2,14 +2,14 @@
 
 namespace App\Evostorm\Facades;
 
-use App\Evostorm\Facades\Contracts\GameMapFacadeInterface;
+use App\Evostorm\Facades\Contracts\TilesFacadeInterface;
 use App\Evostorm\Models\User;
 use App\Evostorm\Models\Tile;
 use App\Evostorm\Models\GameMapUserArea;
 use App\Evostorm\Models\GameConfig;
 use App\Evostorm\Enums\GameConfigEnum;
 
-class GameMapFacade implements GameMapFacadeInterface
+class TilesFacade implements TilesFacadeInterface
 {
 
     /**
@@ -34,5 +34,13 @@ class GameMapFacade implements GameMapFacadeInterface
             }
         }
     }
+
+    public function erasePopulation(Tile $tile)
+    {
+        $tile->species_id = null;
+        $tile->species_amount = 0;
+        $tile->save();
+    }
+
 
 }

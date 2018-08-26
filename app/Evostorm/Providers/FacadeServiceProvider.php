@@ -29,8 +29,8 @@ class FacadeServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'App\Evostorm\Facades\Contracts\GameMapFacadeInterface',
-            'App\Evostorm\Facades\GameMapFacade'
+            'App\Evostorm\Facades\Contracts\TilesFacadeInterface',
+            'App\Evostorm\Facades\TilesFacade'
         );
 
         $this->app->bind(

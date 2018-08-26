@@ -18,7 +18,7 @@ class Controller extends BaseController
         ]);
     }
 
-    protected function saveError($error_message)
+    protected function saveError($error_message = '')
     {
         return response()->json([
             'error' => "There was an error saving data. Please try again later." . $error_message

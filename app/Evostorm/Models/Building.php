@@ -9,6 +9,7 @@ class Building extends Model
 
     protected $table = 'buildings';
     public $timestamps = true;
+    protected $fillable = ['user_id', 'tile_id', 'building_level_id', 'building_status_id'];
 
     public function level()
     {

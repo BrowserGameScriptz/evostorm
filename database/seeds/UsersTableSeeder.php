@@ -1,21 +1,21 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Evostorm\Facades\Contracts\GameMapFacadeInterface;
+use App\Evostorm\Facades\Contracts\TilesFacadeInterface;
 use App\Evostorm\Facades\Contracts\ResourcesFacadeInterface;
 use App\Evostorm\Repositories\UserRepositoryInterface;
 
 class UsersTableSeeder extends Seeder
 {
 
-    protected $gameMapFacade, $resourcesFacade;
+    protected $tilesFacade, $resourcesFacade;
     protected $userRepository;
 
-    public function __construct(GameMapFacadeInterface $gameMapFacade,
+    public function __construct(TilesFacadeInterface $tilesFacade,
                                 ResourcesFacadeInterface $resourcesFacade,
                                 UserRepositoryInterface $userRepository)
     {
-        $this->gameMapFacade = $gameMapFacade;
+        $this->tilesFacade = $tilesFacade;
         $this->resourcesFacade = $resourcesFacade;
         $this->userRepository = $userRepository;
     }
@@ -35,7 +35,7 @@ class UsersTableSeeder extends Seeder
             'password' => 'password',
         ]);
 
-        $this->gameMapFacade->assignRandomTerrain($user);
+        $this->tilesFacade->assignRandomTerrain($user);
         $this->resourcesFacade->assignStartingResources($user);
 
         $user = $this->userRepository->create([
@@ -44,7 +44,7 @@ class UsersTableSeeder extends Seeder
             'password' => 'password',
         ]);
 
-        $this->gameMapFacade->assignRandomTerrain($user);
+        $this->tilesFacade->assignRandomTerrain($user);
         $this->resourcesFacade->assignStartingResources($user);
 
         $user = $this->userRepository->create([
@@ -53,7 +53,7 @@ class UsersTableSeeder extends Seeder
             'password' => 'password',
         ]);
 
-        $this->gameMapFacade->assignRandomTerrain($user);
+        $this->tilesFacade->assignRandomTerrain($user);
         $this->resourcesFacade->assignStartingResources($user);
     }
 

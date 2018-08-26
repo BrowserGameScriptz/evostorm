@@ -4,10 +4,10 @@ namespace App\Evostorm\Repositories\Eloquent;
 
 
 use App\Evostorm\Models\Tile;
-use App\Evostorm\Repositories\GameMapRepositoryInterface;
+use App\Evostorm\Repositories\TileRepositoryInterface;
 use DB;
 
-class GameMapRepository extends AbstractRepository implements GameMapRepositoryInterface
+class TileRepository extends AbstractRepository implements TileRepositoryInterface
 {
     public function __construct(Tile $model)
     {

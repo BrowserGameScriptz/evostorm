@@ -3,6 +3,7 @@
 namespace App\Evostorm\Facades;
 
 use App\Evostorm\Facades\Contracts\ResourcesFacadeInterface;
+use App\Evostorm\Models\Cost;
 use App\Evostorm\Models\User;
 use App\Evostorm\Enums\GameConfigEnum;
 use App\Evostorm\Models\GameConfig;
@@ -55,5 +56,14 @@ class ResourcesFacade implements ResourcesFacadeInterface
 
         $user->save();
     }
+
+    public function updateUserResourcesByCost(User $user, Cost $cost)
+    {
+        $user->amount_gold = $user->amount_gold - $cost->gold;
+        $user->amount_uranium = $user->amount_uranium - $cost->uranium;
+        $user->amount_kegrum = $user->amount_kegrum - $cost->kegrum;
+        $user->save();
+    }
+
 
 }

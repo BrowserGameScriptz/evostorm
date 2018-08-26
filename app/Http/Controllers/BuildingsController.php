@@ -33,13 +33,9 @@ class BuildingsController extends Controller
 
     public function build($building_level_id, $tile_id)
     {
-        try {
             DB::beginTransaction();
             $this->dispatch(new BuildBuilding($building_level_id, $tile_id));
-        } catch (\Exception $e) {
-            DB::rollback();
-            return $this->saveError();
-        }
+
         DB::commit();
         return response()->json([
             'success' => "success"
