@@ -8,9 +8,18 @@ use App\Evostorm\Models\Tile;
 use App\Evostorm\Models\GameMapUserArea;
 use App\Evostorm\Models\GameConfig;
 use App\Evostorm\Enums\GameConfigEnum;
+use App\Evostorm\Repositories\TileRepositoryInterface;
 
 class TilesFacade implements TilesFacadeInterface
 {
+
+    protected $tileRepository;
+
+    public function __construct(TileRepositoryInterface $tileRepository)
+    {
+        $this->tileRepository = $tileRepository;
+    }
+
 
     /**
      * This function assigns a random area of the game map to the user who
@@ -41,6 +50,4 @@ class TilesFacade implements TilesFacadeInterface
         $tile->species_amount = 0;
         $tile->save();
     }
-
-
 }

@@ -4,7 +4,7 @@ namespace App\Evostorm\Repositories;
 
 
 use App\Evostorm\Models\Building;
-use App\Evostorm\Models\BuildingLevel;
+use App\Evostorm\Models\User;
 
 interface BuildingRepositoryInterface
 {
@@ -12,7 +12,9 @@ interface BuildingRepositoryInterface
 
     public function findIdByTileId($tile_id);
 
-    public function addBuildingToQueue(Building $building, BuildingLevel $buildingLevel);
+    public function findUserBuildingsList(User $user);
+
+    public function addBuildingToQueue(Building $building);
 
     public function findBuildingFirstLevelById($building_level_id);
 }

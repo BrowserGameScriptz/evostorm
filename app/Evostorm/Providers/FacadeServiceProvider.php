@@ -42,5 +42,10 @@ class FacadeServiceProvider extends ServiceProvider
             'App\Evostorm\Facades\Contracts\ResourcesFacadeInterface',
             'App\Evostorm\Facades\ResourcesFacade'
         );
+
+        $this->app->bind(
+            'App\Evostorm\Facades\Contracts\UsersFacadeInterface',
+            'App\Evostorm\Facades\UsersFacade'
+        );
     }
 }

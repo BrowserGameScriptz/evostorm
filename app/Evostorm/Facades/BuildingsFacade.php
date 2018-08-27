@@ -15,17 +15,6 @@ use DB;
  */
 class BuildingsFacade implements BuildingsFacadeInterface
 {
-
-    public function checkEnoughResourcesToBuild(BuildingLevel $buildingLevel, User $user)
-    {
-        if ((($user->amount_gold - $buildingLevel->cost->gold) < 0) || (($user->amount_uranium - $buildingLevel->cost->uranium) < 0) || (($user->amount_kegrum - $buildingLevel->cost->kegrum) < 0)
-        ) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     public function checkBuildingAllowedToBuildOnTile(BuildingLevel $buildingLevel, Tile $tile)
     {
         $allowed = DB::select(DB::raw("SELECT EXISTS(SELECT 1 FROM building_types_allowed_tile_types WHERE building_type_id =:building_type_id AND tile_type_id=:tile_type_id LIMIT 1) as is_allowed"), array('building_type_id' => $buildingLevel->building_type_id, 'tile_type_id' => $tile->tile_type_id));

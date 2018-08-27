@@ -70,9 +70,10 @@ WHERE b.tile_id=:tile_id LIMIT 1"), array('tile_id' => $tile->id));
             if (!$is_occupied) {
 
                 $availableBuildings = DB::select(DB::raw(
-                    "SELECT bt.name,bl.*
+                    "SELECT bt.name,bl.*,c.gold as gold_cost, c.uranium as uranium_cost, c.kegrum as kegrum_cost, c.time as time_cost
 FROM building_levels bl
 LEFT JOIN building_types bt on bt.id=bl.building_type_id
+LEFT JOIN costs c on c.id=bl.cost_id
 WHERE bl.building_type_id IN (
 SELECT building_type_id
 FROM building_types_allowed_tile_types

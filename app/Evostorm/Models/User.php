@@ -36,7 +36,9 @@ class User extends Authenticatable
      */
     public function canAfford(Cost $cost)
     {
-        if ((($this->amount_gold - $cost->gold) < 0) || (($this->amount_uranium - $cost->uranium) < 0) || (($this->amount_kegrum - $cost->kegrum) < 0)
+        if ((($this->amount_gold - $cost->gold) < 0)
+            || (($this->amount_uranium - $cost->uranium) < 0)
+            || (($this->amount_kegrum - $cost->kegrum) < 0)
         ) {
             return false;
         } else {
