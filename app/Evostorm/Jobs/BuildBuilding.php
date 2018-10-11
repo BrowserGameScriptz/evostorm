@@ -1,14 +1,19 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Evostorm\Jobs;
 
 use App\Evostorm\Enums\BuildingStatusEnum;
-use App\Evostorm\Exceptions\Tile\UserTileNotFoundException;
+use App\Evostorm\Exceptions\Building\BuildingTypeNotAllowedException;
+use App\Evostorm\Exceptions\Building\NoSuchBuildingLevelException;
+use App\Evostorm\Exceptions\Resources\NotEnoughResourcesException;
 use App\Evostorm\Facades\Contracts\BuildingsFacadeInterface;
 use App\Evostorm\Facades\Contracts\ResourcesFacadeInterface;
 use App\Evostorm\Facades\Contracts\TilesFacadeInterface;
+use App\Evostorm\Facades\Contracts\UsersFacadeInterface;
+use App\Evostorm\Models\User;
 use App\Evostorm\Repositories\BuildingRepositoryInterface;
 use App\Evostorm\Repositories\TileRepositoryInterface;
+use App\Evostorm\Traits\ChecksTileExists;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -20,13 +25,15 @@ use Log;
 class BuildBuilding implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use ChecksTileExists;
 
-    private $building_level_id, $tile_id;
+    private $building_level_id, $tile_id, $user;
     private $tileRepository;
     private $buildingRepository;
     private $resourcesFacade;
     private $tilesFacade;
     private $buildingsFacade;
+    private $usersFacade;
 
     /**
      * Create a new job instance.
@@ -34,10 +41,11 @@ class BuildBuilding implements ShouldQueue
      * @return void
      */
     public function __construct($building_level_id,
-                                $tile_id)
+                                $tile_id, User $user)
     {
         $this->building_level_id = $building_level_id;
         $this->tile_id = $tile_id;
+        $this->user = $user;
     }
 
     /**
@@ -50,54 +58,37 @@ class BuildBuilding implements ShouldQueue
         BuildingRepositoryInterface $buildingRepository,
         ResourcesFacadeInterface $resourcesFacade,
         TilesFacadeInterface $tilesFacade,
-        BuildingsFacadeInterface $buildingsFacade)
+        BuildingsFacadeInterface $buildingsFacade,
+        UsersFacadeInterface $usersFacade)
     {
         $this->tileRepository = $tileRepository;
         $this->buildingRepository = $buildingRepository;
         $this->resourcesFacade = $resourcesFacade;
         $this->tilesFacade = $tilesFacade;
         $this->buildingsFacade = $buildingsFacade;
-        /**
-         * Steps
-         * 1. Check if tile exists and belongs to authenticated user
-         * 2. Check if building level exits
-         * 3. Check we are allowed to build on this tile
-         * 4. Check if user has enough resources to build
-         * 5. Create building
-         * 6. Add building to building queue
-         * 6. Update user resources
-         * 7. Erase tile's population
-         */
-        // Check if tile exists and belongs to authenticated user
-        $tile = $this->tileRepository->findByIdAndUserId($this->tile_id, Auth::user()->id);
-        if (!$tile) {
-            throw new UserTileNotFoundException();
-        }
+        $this->usersFacade = $usersFacade;
 
-        // Check if building level exists
+        $this->build();
+    }
+
+    private function build()
+    {
+        $tile = $this->checkUserTileExists($this->tile_id, $this->user);
+
         $buildingLevel = $this->buildingRepository->findBuildingFirstLevelById($this->building_level_id);
         if (!$buildingLevel) {
-            return $this->error("The given building does not exist.");
+            throw new NoSuchBuildingLevelException();
         }
 
-        // Now check if we can build a building of this type on this tile
         $is_allowed = $this->buildingsFacade->checkBuildingAllowedToBuildOnTile($buildingLevel, $tile);
         if (!$is_allowed) {
-            return $this->error("You can't build this building on this tile type.");
+            throw new BuildingTypeNotAllowedException();
         }
 
-        // Check if user has enough resources to build this building
-        $has_resources = $this->buildingsFacade->checkEnoughResourcesToBuild($buildingLevel, Auth::user());
-        if (!$has_resources) {
-            return $this->error("You don't have enough resources to build this building.");
-        }
-
+        $this->checkUserHasEnoughResources($buildingLevel->cost);
         $building = $this->createBuilding($tile, $buildingLevel);
-
-        $this->resourcesFacade->updateUserResourcesByCost(Auth::user(), $buildingLevel->cost);
-
-        $this->buildingRepository->addBuildingToQueue($building, $buildingLevel);
-
+        $this->resourcesFacade->updateUserResourcesByCost($this->user, $building->level->cost);
+        $this->buildingRepository->addBuildingToQueue($building);
         $this->tilesFacade->erasePopulation($tile);
     }
 
@@ -115,5 +106,17 @@ class BuildBuilding implements ShouldQueue
             'building_status_id' => BuildingStatusEnum::BUILDING_IN_PROGRESS
         ));
         return $building;
+    }
+
+    /**
+     * @param $cost
+     * @throws NotEnoughResourcesException
+     */
+    public function checkUserHasEnoughResources($cost): void
+    {
+        $has_resources = $this->usersFacade->checkHasEnoughResources($this->user, $cost);
+        if (!$has_resources) {
+            throw new NotEnoughResourcesException();
+        }
     }
 }

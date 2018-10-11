@@ -4,15 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Evostorm\Facades\Contracts\BuildingsFacadeInterface;
 use App\Evostorm\Models\UserHasSpecies;
-use App\Evostorm\Models\Tile;
-use App\Evostorm\Models\BuildingLevel;
 use App\Evostorm\Models\Building;
-use App\Evostorm\Models\BuildingQueue;
-use App\Evostorm\Enums\BuildingStatusEnum;
 use App\Evostorm\Models\BuildingWorker;
-use App\Jobs\BuildBuilding;
+use App\Evostorm\Jobs\BuildBuilding;
+use App\Evostorm\Repositories\BuildingRepositoryInterface;
 use Auth;
-use Carbon\Carbon;
 use DB;
 use Log;
 
@@ -20,21 +16,30 @@ class BuildingsController extends Controller
 {
 
     protected $buildingsFacade;
+    protected $buildingRepository;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(BuildingsFacadeInterface $buildingsFacade)
+    public function __construct(BuildingsFacadeInterface $buildingsFacade,
+                                BuildingRepositoryInterface $buildingRepository)
     {
         $this->buildingsFacade = $buildingsFacade;
+        $this->buildingRepository = $buildingRepository;
     }
 
     public function build($building_level_id, $tile_id)
     {
-            DB::beginTransaction();
-            $this->dispatch(new BuildBuilding($building_level_id, $tile_id));
+        DB::beginTransaction();
+        try {
+
+            $this->dispatch(new BuildBuilding($building_level_id, $tile_id, Auth::user()));
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $this->saveError($e->getMessage());
+        }
 
         DB::commit();
         return response()->json([
@@ -44,7 +49,7 @@ class BuildingsController extends Controller
 
     public function getUserBuildings()
     {
-        $buildings = Building::where('user_id', Auth::user()->id)->get();
+        $buildings = $this->buildingRepository->findUserBuildingsList(Auth::user());
 
         $buildingsArray = Array();
 
